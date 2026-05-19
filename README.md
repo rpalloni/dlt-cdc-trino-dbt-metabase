@@ -1,11 +1,10 @@
 CDC pipeline: PostgreSQL changes are captured in real time and written to Apache Iceberg tables on MinIO object storage.
-events pipeline: 
 
 Trino as query engine to read Iceberg tables.
 
 ## Architecture
 ```
-PostgreSQL (WAL) --> OLake --> Iceberg / MinIO
+PostgreSQL (WAL) --> OLake --> Iceberg / MinIO <-- Trino
 ```
 
 | Component | Role |
