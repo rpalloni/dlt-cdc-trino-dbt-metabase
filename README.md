@@ -1,1 +1,1 @@
-# dlt-cdc-trino-dbt
+### architecture
