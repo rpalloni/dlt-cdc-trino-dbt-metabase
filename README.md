@@ -12,8 +12,9 @@ PostgreSQL (WAL) --> OLake --> Iceberg / MinIO <-- Trino
 | PostgreSQL 18 | Source database with logical replication enabled |
 | OLake | CDC engine — reads WAL via replication slot, writes Iceberg |
 | MinIO | S3-compatible object store hosting Iceberg data files |
+| Trino | Distributed query engine - reads Iceberg tables from MinIO via JDBC catalog |
 
-OLake uses a JDBC catalog (backed by the same PostgreSQL instance) to track Iceberg table metadata.
+OLake uses a JDBC catalog (backed by the same PostgreSQL instance) to track Iceberg table metadata. Trino connects to the same JDBC catalog to discover and query those tables.
 
 
 ## Run
