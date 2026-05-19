@@ -33,3 +33,6 @@ INSERT INTO invoices (company_id, invoice_number, amount, currency, status, issu
     (2, 'INV-2024-004',  320.00, 'EUR', 'overdue', '2024-01-05', '2024-02-05'),
     (3, 'INV-2024-005', 5000.00, 'EUR', 'draft',   '2024-02-10', '2024-03-10')
 ON CONFLICT DO NOTHING;
+
+-- CDC publication for OLake
+CREATE PUBLICATION olake_publication FOR TABLE companies, invoices;

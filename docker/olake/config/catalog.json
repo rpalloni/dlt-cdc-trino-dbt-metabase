@@ -1,0 +1,20 @@
+{
+  "document_streams": [
+    {
+      "stream_name": "companies",
+      "namespace": "public",
+      "sync_mode": "cdc",
+      "primary_key": {"id": "integer"},
+      "cursor_field": ["updated_at"],
+      "selected": true
+    },
+    {
+      "stream_name": "invoices",
+      "namespace": "public",
+      "sync_mode": "cdc",
+      "primary_key": {"id": "integer"},
+      "cursor_field": ["updated_at"],
+      "selected": true
+    }
+  ]
+}

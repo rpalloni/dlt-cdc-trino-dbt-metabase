@@ -1,0 +1,12 @@
+{
+  "host": "postgres-source",
+  "port": 5432,
+  "database": "pgsource",
+  "username": "pgsource",
+  "password": "pgsource",
+  "update_method": {
+    "replication_slot": "olake_slot",
+    "plugin": "pgoutput",
+    "publication_name_prefix": "olake"
+  }
+}

@@ -25,6 +25,7 @@ services:
       /usr/bin/minio server /data --console-address :9001 --address :9000 & sleep 5;
       /usr/bin/mc alias set local http://localhost:9000 ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD};
       /usr/bin/mc mb --ignore-existing local/events;
+      /usr/bin/mc mb --ignore-existing local/pgcdc;
       wait
       "
 

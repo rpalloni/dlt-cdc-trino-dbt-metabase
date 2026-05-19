@@ -1,0 +1,21 @@
+# OLake CDC: Postgres -> MinIO (Iceberg)
+
+services:
+   olake:
+      image: olakego/source-postgres:v0.7.3
+      container_name:  olake
+      volumes:
+         - ./olake/config:/mnt/config
+      command: >
+        sync
+        --source /mnt/config/source.json
+        --destination /mnt/config/destination.json
+        --catalog /mnt/config/catalog.json
+        --state /mnt/config/state.json
+      networks:
+         - data-network
+      restart: on-failure:5
+
+networks:
+   data-network:
+      external: true
