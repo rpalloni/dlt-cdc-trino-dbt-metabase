@@ -8,7 +8,7 @@ services:
          - ./olake/config:/mnt/config
       command: >
         sync
-        --source /mnt/config/source.json
+        --config /mnt/config/source.json
         --destination /mnt/config/destination.json
         --catalog /mnt/config/catalog.json
         --state /mnt/config/state.json

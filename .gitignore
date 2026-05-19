@@ -2,3 +2,9 @@
 .venv
 .env
 __pycache__
+
+# olake
+docker/olake/config/logs/
+docker/olake/config/streams.json
+docker/olake/config/stats.json
+docker/olake/config/user_id.txt

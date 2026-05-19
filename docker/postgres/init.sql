@@ -35,4 +35,6 @@ INSERT INTO invoices (company_id, invoice_number, amount, currency, status, issu
 ON CONFLICT DO NOTHING;
 
 -- CDC publication for OLake
-CREATE PUBLICATION olake_publication FOR TABLE companies, invoices;
+CREATE PUBLICATION olake FOR TABLE companies, invoices;
+SELECT pg_create_logical_replication_slot('olake_slot', 'pgoutput')
+WHERE NOT EXISTS (SELECT 1 FROM pg_replication_slots WHERE slot_name = 'olake_slot');

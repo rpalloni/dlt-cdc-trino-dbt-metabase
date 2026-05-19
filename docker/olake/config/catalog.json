@@ -1,20 +1,86 @@
 {
-  "document_streams": [
+  "selected_streams": {
+    "public": [
+      {
+        "normalization": true,
+        "partition_regex": "",
+        "selected_columns": {
+          "columns": ["id", "name", "vat_number", "country", "created_at", "updated_at", "_cdc_lsn", "_cdc_timestamp", "_olake_timestamp", "_op_type", "_olake_id"],
+          "sync_new_columns": true
+        },
+        "stream_name": "companies"
+      },
+      {
+        "normalization": true,
+        "partition_regex": "",
+        "selected_columns": {
+          "columns": ["id", "company_id", "invoice_number", "amount", "currency", "status", "issued_at", "due_at", "created_at", "updated_at", "_cdc_lsn", "_cdc_timestamp", "_olake_timestamp", "_op_type", "_olake_id"],
+          "sync_new_columns": true
+        },
+        "stream_name": "invoices"
+      }
+    ]
+  },
+  "streams": [
     {
-      "stream_name": "companies",
-      "namespace": "public",
-      "sync_mode": "cdc",
-      "primary_key": {"id": "integer"},
-      "cursor_field": ["updated_at"],
-      "selected": true
+      "stream": {
+        "available_cursor_fields": ["created_at", "updated_at", "id", "name", "vat_number", "country"],
+        "default_stream_properties": {"append_mode": false, "normalization": true},
+        "destination_database": "postgres_pgsource:public",
+        "destination_table": "companies",
+        "name": "companies",
+        "namespace": "public",
+        "source_defined_primary_key": ["id"],
+        "supported_sync_modes": ["incremental", "cdc", "strict_cdc", "full_refresh"],
+        "sync_mode": "cdc",
+        "type_schema": {
+          "properties": {
+            "_cdc_lsn": {"destination_column_name": "_cdc_lsn", "olake_column": true, "type": ["string", "null"]},
+            "_cdc_timestamp": {"destination_column_name": "_cdc_timestamp", "olake_column": true, "type": ["timestamp_micro", "null"]},
+            "_olake_id": {"destination_column_name": "_olake_id", "olake_column": true, "type": ["string", "null"]},
+            "_olake_timestamp": {"destination_column_name": "_olake_timestamp", "olake_column": true, "type": ["timestamp_micro", "null"]},
+            "_op_type": {"destination_column_name": "_op_type", "olake_column": true, "type": ["string", "null"]},
+            "country": {"destination_column_name": "country", "type": ["string"]},
+            "created_at": {"destination_column_name": "created_at", "type": ["timestamp"]},
+            "id": {"destination_column_name": "id", "type": ["integer_small"]},
+            "name": {"destination_column_name": "name", "type": ["string"]},
+            "updated_at": {"destination_column_name": "updated_at", "type": ["timestamp"]},
+            "vat_number": {"destination_column_name": "vat_number", "type": ["string", "null"]}
+          }
+        }
+      }
     },
     {
-      "stream_name": "invoices",
-      "namespace": "public",
-      "sync_mode": "cdc",
-      "primary_key": {"id": "integer"},
-      "cursor_field": ["updated_at"],
-      "selected": true
+      "stream": {
+        "available_cursor_fields": ["currency", "issued_at", "created_at", "updated_at", "id", "company_id", "status", "due_at", "invoice_number", "amount"],
+        "default_stream_properties": {"append_mode": false, "normalization": true},
+        "destination_database": "postgres_pgsource:public",
+        "destination_table": "invoices",
+        "name": "invoices",
+        "namespace": "public",
+        "source_defined_primary_key": ["id"],
+        "supported_sync_modes": ["full_refresh", "incremental", "cdc", "strict_cdc"],
+        "sync_mode": "cdc",
+        "type_schema": {
+          "properties": {
+            "_cdc_lsn": {"destination_column_name": "_cdc_lsn", "olake_column": true, "type": ["string", "null"]},
+            "_cdc_timestamp": {"destination_column_name": "_cdc_timestamp", "olake_column": true, "type": ["timestamp_micro", "null"]},
+            "_olake_id": {"destination_column_name": "_olake_id", "olake_column": true, "type": ["string", "null"]},
+            "_olake_timestamp": {"destination_column_name": "_olake_timestamp", "olake_column": true, "type": ["timestamp_micro", "null"]},
+            "_op_type": {"destination_column_name": "_op_type", "olake_column": true, "type": ["string", "null"]},
+            "amount": {"destination_column_name": "amount", "type": ["number"]},
+            "company_id": {"destination_column_name": "company_id", "type": ["integer_small"]},
+            "created_at": {"destination_column_name": "created_at", "type": ["timestamp"]},
+            "currency": {"destination_column_name": "currency", "type": ["string"]},
+            "due_at": {"destination_column_name": "due_at", "type": ["timestamp", "null"]},
+            "id": {"destination_column_name": "id", "type": ["integer_small"]},
+            "invoice_number": {"destination_column_name": "invoice_number", "type": ["string"]},
+            "issued_at": {"destination_column_name": "issued_at", "type": ["timestamp"]},
+            "status": {"destination_column_name": "status", "type": ["string"]},
+            "updated_at": {"destination_column_name": "updated_at", "type": ["timestamp"]}
+          }
+        }
+      }
     }
   ]
 }

@@ -1,11 +1,16 @@
 {
-  "writer": "ICEBERG",
-  "S3": {
-    "access_key_id": "admin",
-    "secret_access_key": "password",
+  "type": "ICEBERG",
+  "writer": {
+    "catalog_type": "jdbc",
+    "aws_access_key": "admin",
+    "aws_secret_key": "password",
     "aws_region": "eu-central-1",
-    "bucket": "iceberg",
-    "endpoint": "http://minio:9000",
-    "path_style_access": true
+    "iceberg_s3_path": "s3://iceberg/",
+    "s3_endpoint": "http://minio:9000",
+    "s3_path_style": true,
+    "s3_use_ssl": false,
+    "jdbc_url": "jdbc:postgresql://postgres-source:5432/pgsource",
+    "jdbc_username": "pgsource",
+    "jdbc_password": "pgsource"
   }
 }

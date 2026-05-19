@@ -5,8 +5,8 @@
   "username": "pgsource",
   "password": "pgsource",
   "update_method": {
+    "type": "CDC",
     "replication_slot": "olake_slot",
-    "plugin": "pgoutput",
-    "publication_name_prefix": "olake"
+    "publication": "olake"
   }
 }
