@@ -12,9 +12,12 @@ services:
         --destination /mnt/config/destination.json
         --catalog /mnt/config/catalog.json
         --state /mnt/config/state.json
+      depends_on:
+        postgres-source:
+          condition: service_healthy # wait source to be ready
       networks:
          - data-network
-      restart: on-failure:5
+      restart: always # continuous CDC (clean and restart)
 
 networks:
    data-network:

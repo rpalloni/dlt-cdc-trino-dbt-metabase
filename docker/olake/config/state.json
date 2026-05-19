@@ -1,1 +1,1 @@
-{"type":"STREAM","global":{"state":{"lsn":"0/1BE1D70"},"streams":["public.companies","public.invoices"]},"streams":[{"stream":"companies","namespace":"public","sync_mode":"","state":{"chunks":[]}},{"stream":"invoices","namespace":"public","sync_mode":"","state":{"chunks":[]}}]}
+{}

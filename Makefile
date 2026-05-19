@@ -22,3 +22,4 @@ down:
 
 destroy: 
 	$(COMPOSE) down --remove-orphans -v
+	echo '{}' > docker/olake/config/state.json # clear Log Sequence Number (change position in the WAL)
