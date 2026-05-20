@@ -1,0 +1,9 @@
+[runtime]
+log_level="WARNING"
+dlthub_telemetry = true
+
+[sources.filesystem]
+bucket_url = "s3://events"
+
+[destination.filesystem]
+bucket_url = "s3://iceberg"
