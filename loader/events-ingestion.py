@@ -2,6 +2,7 @@ import dlt
 import time
 from datetime import datetime
 from dlt.sources.filesystem import filesystem, read_jsonl
+from dlt.destinations.adapters import iceberg_adapter, iceberg_partition
 
 POLL_INTERVAL = 5
 
@@ -21,13 +22,17 @@ def bucket_to_iceberg() -> None:
     print(f"[{_ts()}] polling s3://events/**/*.jsonl every {POLL_INTERVAL}s — Ctrl+C to stop")
 
     while True:
-        source = (
+        source = iceberg_adapter(
             filesystem(
                 bucket_url="s3://events",
                 file_glob="**/*.jsonl",
                 incremental=dlt.sources.incremental("modification_date"),
             )
-            | read_jsonl()
+            | read_jsonl(),
+            partition=[
+                iceberg_partition.day("timestamp"), # day partition
+                iceberg_partition.identity("type"), # event type partition (track/identify/page)
+            ]
         )
 
         load_info = pipeline.run(source, table_name="events", table_format="iceberg")
