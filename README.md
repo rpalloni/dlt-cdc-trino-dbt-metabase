@@ -68,7 +68,7 @@ lsn mismatch, please proceed with clear destination
 ### dlt Loader
 | File | Role |
 |---|---|
-| `loader/events-engine.py` | Generates synthetic Segment-style events and writes JSONL batches to MinIO `s3://events/` |
+| `loader/events-engine.py` | Generates synthetic events and writes JSONL batches to MinIO `s3://events/` |
 | `loader/events-ingestion.py` | Polls `s3://events/` for new JSONL files (incremental) and loads them into an Iceberg table via dlt |
 | `loader/constants.py` | Shared config — MinIO credentials, event types, user pool, batch settings |
 
