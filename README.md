@@ -11,12 +11,15 @@ MinIO events source --> dlt Iceberg tables  / MinIO <-- Trino
 
 | Component | Role |
 |---|---|
-| PostgreSQL 18 | Source database with logical replication enabled |
-| OLake | CDC engine — reads WAL via replication slot, writes Iceberg |
+| PostgreSQL | Source database with logical replication enabled |
 | MinIO | S3-compatible object store hosting Iceberg data files |
-| Trino | Distributed query engine - reads Iceberg tables from MinIO via JDBC catalog |
+| OLake | CDC engine — reads WAL via replication slot, writes Iceberg |
+| dlt | Ingestion engine for events stream from bucket to Iceberg |
+| dbt | Transformation layer using Trino adapter and persisting to Iceberg |
+| Trino | Distributed query engine - reads Iceberg tables from MinIO via JDBC catalog, powers the dbt engine, interacts with Metabase |
+| Metabase | BI interface |
 
-OLake uses a JDBC catalog (backed by the same PostgreSQL instance) to track Iceberg table metadata. Trino connects to the same JDBC catalog to discover and query those tables.
+OLake and dlt use a JDBC catalog (backed by the same PostgreSQL instance) to track Iceberg table metadata. Trino connects to the same JDBC catalog to discover and query those tables.
 
 
 ## Run
