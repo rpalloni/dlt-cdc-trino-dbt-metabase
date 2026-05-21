@@ -4,6 +4,7 @@ COMPOSE = docker compose \
 	-f docker/docker-compose-storage.yml \
 	-f docker/docker-compose-olake.yml \
 	-f docker/docker-compose-trino.yml \
+	-f docker/docker-compose-metabase.yml \
 	--env-file docker/.env
 
 network:

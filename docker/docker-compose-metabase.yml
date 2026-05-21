@@ -1,0 +1,55 @@
+services:
+  metabase:
+    image: metabase/metabase:v0.60.x
+    container_name: metabase
+    hostname: metabase
+    volumes:
+      - /dev/urandom:/dev/random:ro
+    ports:
+      - 3000:3000
+    environment:
+      MB_DB_TYPE: postgres
+      MB_DB_DBNAME: metabaseappdb
+      MB_DB_PORT: 5432
+      MB_DB_USER: ${MB_DB_USER:-admin}
+      MB_DB_PASS: ${MB_DB_PASS:-password}
+      MB_DB_HOST: postgres-metabase
+      MB_PLUGINS_DIR: /plugins
+      JAVA_TOOL_OPTIONS: "-Xmx1g"
+    deploy:
+      resources:
+        limits:
+          memory: 1.5g
+    networks:
+      - metabase-network
+      - data-network
+    healthcheck:
+      test: curl --fail -I http://localhost:3000/api/health || exit 1
+      interval: 15s
+      timeout: 5s
+      retries: 5
+    depends_on:
+      postgres-metabase:
+        condition: service_healthy
+        
+  postgres-metabase:
+    image: postgres:18
+    container_name: postgres-metabase
+    environment:
+      POSTGRES_USER: ${MB_DB_USER:-admin}
+      POSTGRES_PASSWORD: ${MB_DB_PASS:-password}
+      POSTGRES_DB: metabaseappdb
+    networks:
+      - metabase-network
+      - data-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d metabaseappdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      
+networks:
+  data-network:
+     external: true
+  metabase-network:
+    driver: bridge

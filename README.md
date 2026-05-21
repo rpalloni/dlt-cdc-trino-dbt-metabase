@@ -28,6 +28,10 @@ make up
 make events # (terminal 1)
 make ingest # (terminal 2)
 
+# transformation
+make transform
+make test
+
 # Tear down (containers + volumes)
 make destroy
 ```
