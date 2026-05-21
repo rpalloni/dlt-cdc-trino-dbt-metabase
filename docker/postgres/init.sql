@@ -20,19 +20,34 @@ CREATE TABLE IF NOT EXISTS invoices (
     updated_at     TIMESTAMPTZ   NOT NULL DEFAULT now()
 );
 
-INSERT INTO companies (name, vat_number, country) VALUES
-    ('Acme S.r.l.',   'IT12345678901', 'IT'),
-    ('Globex S.p.A.', 'IT98765432100', 'IT'),
-    ('Initech GmbH',  'DE123456789',   'DE')
-ON CONFLICT DO NOTHING;
+INSERT INTO companies (name, vat_number, country)
+SELECT
+    (ARRAY[
+        'Acme', 'Globex', 'Initech', 'Umbrella', 'Stark Industries',
+        'Wayne Enterprises', 'Oscorp', 'Cyberdyne', 'Wonka', 'Nakatomi',
+        'Tyrell', 'Weyland', 'Massive Dynamic', 'Pied Piper', 'Hooli',
+        'Dunder Mifflin', 'Vandelay', 'Sterling Cooper', 'Prestige', 'Soylent'
+    ])[s.i]
+    || ' ' ||
+    (ARRAY['S.r.l.', 'S.p.A.', 'GmbH', 'Ltd.', 'SAS', 'Inc.', 'B.V.', 'AG'])[floor(random() * 8 + 1)::int] AS name,
+    (ARRAY['IT', 'DE', 'FR', 'ES', 'NL'])[floor(random() * 5 + 1)::int]
+    || lpad((random() * 99999999999)::bigint::text, 11, '0')                                               AS vat_number,
+    (ARRAY['IT', 'IT', 'IT', 'DE', 'DE', 'FR', 'FR', 'ES', 'NL', 'NL'])[floor(random() * 10 + 1)::int]     AS country
+FROM generate_series(1, 20) AS s(i);
 
-INSERT INTO invoices (company_id, invoice_number, amount, currency, status, issued_at, due_at) VALUES
-    (1, 'INV-2024-001', 1200.00, 'EUR', 'paid',    '2024-01-15', '2024-02-15'),
-    (1, 'INV-2024-002',  450.50, 'EUR', 'pending', '2024-02-01', '2024-03-01'),
-    (2, 'INV-2024-003', 8750.00, 'EUR', 'paid',    '2024-01-20', '2024-02-20'),
-    (2, 'INV-2024-004',  320.00, 'EUR', 'overdue', '2024-01-05', '2024-02-05'),
-    (3, 'INV-2024-005', 5000.00, 'EUR', 'draft',   '2024-02-10', '2024-03-10')
-ON CONFLICT DO NOTHING;
+INSERT INTO invoices (company_id, invoice_number, amount, currency, status, issued_at, due_at, created_at, updated_at)
+SELECT
+    (SELECT id FROM companies WHERE s.i IS NOT NULL ORDER BY random() LIMIT 1)                          AS company_id,
+    'INV-' || to_char(CURRENT_DATE - (random() * 730)::int, 'YYYY') || '-' || lpad(s.i::text, 4, '0')   AS invoice_number,
+    (random() * 9990 + 10)::numeric(12,2)                                                               AS amount,
+    (ARRAY['EUR', 'EUR', 'EUR', 'USD', 'GBP'])[floor(random() * 5 + 1)::int]                            AS currency,
+    (ARRAY['draft', 'pending', 'pending', 'pending', 'paid', 'paid', 'paid', 'paid', 'overdue', 'overdue'])
+        [floor(random() * 10 + 1)::int]                                                                 AS status,
+    CURRENT_DATE - (random() * 730)::int                                                                AS issued_at,
+    CURRENT_DATE - (random() * 730)::int + (random() * 60 + 30)::int                                    AS due_at,
+    now() - (random() * interval '730 days')                                                            AS created_at,
+    now() - (random() * interval '30 days')                                                             AS updated_at
+FROM generate_series(1, 1000) AS s(i);
 
 -- CDC publication for OLake
 CREATE PUBLICATION olake FOR TABLE companies, invoices;
