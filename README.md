@@ -1,8 +1,8 @@
 CDC pipeline: PostgreSQL changes are captured in real time and written to Apache Iceberg tables on MinIO object storage. \
 dlt pipeline: `loader/` directory contains a second pipeline that generates synthetic analytics events and ingests them into Iceberg via [dlt](https://dlthub.com)
 
-**Client-Server** model architecture: \
-Trino as query engine to read Iceberg tables created as an infrastructure component on a dedicated container.
+**Client-Server model architecture:**
+Trino as query engine created as an infrastructure component on a dedicated container to read Iceberg tables, enable `dbt` transformations and serve Metabase requests.
 
 ## Architecture
 ```
